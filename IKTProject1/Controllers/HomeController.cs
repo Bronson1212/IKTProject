@@ -1,8 +1,8 @@
-using IKTProject.Models;
+using IKTProject1.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace IKTProject.Controllers
+namespace IKTProject1.Controllers
 {
     public class HomeController : Controller
     {

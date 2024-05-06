@@ -1,4 +1,4 @@
-namespace IKTProject.Models
+namespace IKTProject1.Models
 {
     public class ErrorViewModel
     {
