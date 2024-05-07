@@ -16,7 +16,10 @@ namespace IKTProject1.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //get list of all messages
+            var mesList = _context.Messages.ToList();
+
+            return View("Index", new {MessagesList = mesList});
         }
 
         //on get display createForm
@@ -30,18 +33,26 @@ namespace IKTProject1.Controllers
         [HttpPost]
         public IActionResult CreatePost(MessageModel mes)
         {
+            //check if i am registred
+            if(User.Identity.Name == null)
+            {
+                return View("Create");
+            }
+
             try
             {
+                //if there is no error save to database
                 mes.Owner = User.Identity.Name;
                 _context.Messages.Add(mes);
+                _context.SaveChanges();
 
             }
             catch (Exception ex)
             {
-                _context.SaveChanges();
-            }                       
+                return View("Create");
+            }
 
-            return View("Create");
+            return RedirectToAction("Index");
         }
     }
 }

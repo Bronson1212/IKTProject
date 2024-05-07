@@ -3,3 +3,10 @@
 *@
 @{
 }
+
+<h1>All Messages</h1>
+
+@foreach(var mes in Model.MessagesList)
+{
+    <p>@mes.Text</p>
+}
