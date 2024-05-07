@@ -13,9 +13,10 @@ namespace IKTProject1.Controllers
             _logger = logger;
         }
 
+        //return messages 
         public IActionResult Index()
         {
-            return View();
+            return Redirect("Messages");
         }
 
         public IActionResult Privacy()
