@@ -28,12 +28,12 @@ namespace IKTProject1.Controllers
 
         //on post create message and save to database
         [HttpPost]
-        public IActionResult CreatePost()
+        public IActionResult CreatePost(MessageModel mes)
         {
             try
-            {              
-                //mes.Autor = User.Identity.Name;
-                //_context.Messages.Add(mes);
+            {
+                mes.Owner = User.Identity.Name;
+                _context.Messages.Add(mes);
 
             }
             catch (Exception ex)
