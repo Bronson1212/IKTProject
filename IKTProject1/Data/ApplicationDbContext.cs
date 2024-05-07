@@ -13,6 +13,6 @@ namespace IKTProject1.Data
             
         }
 
-        public DbSet<MessagesModel> Messages { get; set; }
+        //public DbSet<MessagesModel> Messages { get; set; }
     }
 }

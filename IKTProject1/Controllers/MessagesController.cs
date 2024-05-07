@@ -28,7 +28,7 @@ namespace IKTProject1.Controllers
 
         //on post create message and save to database
         [HttpPost]
-        public IActionResult CreatePost(MessagesModel mes)
+        public IActionResult CreatePost()
         {
             try
             {              
