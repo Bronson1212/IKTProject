@@ -5,8 +5,73 @@
 }
 
 <h1>All Messages</h1>
-
+<br />
 @foreach(var mes in Model.MessagesList)
 {
-    <p>@mes.Text</p>
+    <div style="border: 2px solid #333; padding: 5px; margin: 2px" id="panel">
+        
+        @* the message *@
+        <h3>@mes.Title</h3>
+        <p>@mes.Text</p>
+        <br />
+        <p style="text-align: right; color:gray; border-bottom: 1px solid gray;">@mes.Owner</p>
+
+        @* comments *@
+        <input type="text" id="comment" name="comment" />
+        <button onclick="SendComment()">Send comment</button>
+    </div>
+    <br />
+}
+
+
+@Html.AntiForgeryToken()
+
+
+@section Scripts
+{
+    <script>
+        function SendComment()
+        {
+            //get the comment message
+            var commentMessage = document.getElementById("comment").value;
+            console.log(commentMessage)
+
+            //get url
+            var url = '@Url.Action("PublishComment")';
+
+            //get antiforgerytoken
+            var t = document.getElementsByName("__RequestVerificationToken")[0].value;
+            console.log(t)
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    
+                    comment: commentMessage,
+                    __RequestVerificationToken: t,
+                
+                },
+                success: successCallback,
+                dataType: "json",
+                error: function (xhr, status, errorThrown) {
+                    var err = "Status: " + status + " " + errorThrown;
+                    console.log(err);
+                },
+
+                // headers:
+                // {
+                //     "__RequestVerificationToken": t
+                // },
+
+            });
+        }
+
+        function successCallback(response)
+        {
+            console.log(response)
+            // if(response)
+        }
+
+    </script>
 }

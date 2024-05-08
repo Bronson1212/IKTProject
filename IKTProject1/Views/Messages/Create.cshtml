@@ -4,12 +4,11 @@
 
 <form asp-action="CreatePost" method="post">
 
-
     <label asp-for="Title"></label>
     <input asp-for="Title"/>
     <br /><br />
     <label asp-for="Text"></label>
-    <input asp-for="Text"/>
+    <textarea type="text" asp-for="Text" style="width: 50%" rows="4"></textarea>
     <br /><br />
     <input type="submit"/>
 
