@@ -18,7 +18,7 @@
 
         @* comments *@
         <input type="text" id="comment" name="comment" />
-        <button onclick="SendComment()">Send comment</button>
+        <button onclick='SendComment("@mes.Id")'>Send comment</button>
     </div>
     <br />
 }
@@ -30,7 +30,7 @@
 @section Scripts
 {
     <script>
-        function SendComment()
+        function SendComment(messageId)
         {
             //get the comment message
             var commentMessage = document.getElementById("comment").value;
@@ -49,6 +49,7 @@
                 data: {
                     
                     comment: commentMessage,
+                    messageId: messageId,
                     __RequestVerificationToken: t,
                 
                 },
