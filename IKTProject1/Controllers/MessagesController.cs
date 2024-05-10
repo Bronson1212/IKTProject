@@ -23,7 +23,11 @@ namespace IKTProject1.Controllers
             List<MessageModel>? mesList = _context.Messages.ToList();
             mesList.Reverse();
 
-            return View("Index", new {MessagesList = mesList});
+            //get comments list
+            List<CommentModel> commList = _context.Comments.ToList();
+            commList.Reverse();
+
+            return View("Index", new {MessagesList = mesList, CommentsList = commList});
         }
 
         [HttpPost]
@@ -35,6 +39,7 @@ namespace IKTProject1.Controllers
             {
                 return Content(JsonSerializer.Serialize(new { status = "fail" }));
             }
+            string userName = User.Identity.Name;
 
             try
             {//save to database
@@ -42,7 +47,7 @@ namespace IKTProject1.Controllers
                 //create comment object
                 var comm = new CommentModel();
                 comm.Text = comment;
-                comm.Autor = User.Identity.Name;
+                comm.Autor = userName;
                 comm.MessageId = int.Parse(messageId);
 
                 //save to database
@@ -55,7 +60,7 @@ namespace IKTProject1.Controllers
                 return Content(JsonSerializer.Serialize(new { status = "fail" }));
             }
 
-            return Content(JsonSerializer.Serialize(new { status = "good" }));
+            return Content(JsonSerializer.Serialize(new { status = "good", commText = comment, userName = userName }));
         }
 
         //on get display createForm
