@@ -4,7 +4,7 @@
 @{
 }
 
-<h1>All Messages (This is main)</h1>
+<h1>All Messages (This is sqlight)</h1>
 <br />
 @foreach(var mes in Model.MessagesList)
 {
@@ -16,9 +16,35 @@
         <br />
         <p style="text-align: right; color:gray; border-bottom: 1px solid gray;">@mes.Owner</p>
 
-        @* comments *@
-        <input type="text" id="comment" name="comment" />
-        <button onclick="SendComment()">Send comment</button>
+
+        @* show hide comments  *@
+        <button onclick='showHideComments("@mes.Id")' style="text-align: center">Show/Hide commetns</button>
+        <br /><br />
+
+        <div id="commentsAndButtons @mes.Id" style="display: none">
+
+            @* comments input *@
+            <div style="text-align: center;">
+                <input type="text" id="comment" name="comment" style="width: 70%"/>
+                <button onclick='SendComment("@mes.Id")'>Send comment</button>
+            </div>
+            <br />
+
+            @* display comments  *@
+            <div id="allComents" style="height: 30vh; overflow: auto;">
+                @foreach(var comm in Model.CommentsList)
+                {
+                    @if(comm.MessageId == mes.Id)
+                    {
+                        <p>@comm.Text</p>
+                        <br />                        
+                    }
+                }
+            </div>
+            <br />
+
+        </div>
+
     </div>
     <br />
 }
@@ -30,11 +56,32 @@
 @section Scripts
 {
     <script>
-        function SendComment()
+
+        function showHideComments(mesId) 
         {
+            var commetsAndButtons = document.getElementById("commentsAndButtons " + mesId)
+
+            //check for state
+            if (commetsAndButtons.style.display == "none") {//is desibled
+
+                //enable
+                commetsAndButtons.style.display = "block";
+            } else 
+            {
+                //desible
+                commetsAndButtons.style.display = "none";
+            }
+        }
+
+
+        function SendComment(messageId) {
             //get the comment message
             var commentMessage = document.getElementById("comment").value;
-            console.log(commentMessage)
+
+            //check if the comment message is empty
+            if (commentMessage == "" || commentMessage == null) {
+                return;
+            }
 
             //get url
             var url = '@Url.Action("PublishComment")';
@@ -47,10 +94,11 @@
                 type: 'POST',
                 url: url,
                 data: {
-                    
+
                     comment: commentMessage,
+                    messageId: messageId,
                     __RequestVerificationToken: t,
-                
+
                 },
                 success: successCallback,
                 dataType: "json",
@@ -65,13 +113,19 @@
                 // },
 
             });
+
+            //empty the message input
+            document.getElementById("comment").value = "";
         }
 
-        function successCallback(response)
-        {
+        function successCallback(response) {
             console.log(response)
-            // if(response)
+            if (response.status == "good") { // add comment
+
+                var commentsDiv = document.getElementById("allComents")
+                commentsDiv.innerHTML = "<p> " + response.commText + " </p><br/>" + commentsDiv.innerHTML;
+            }
         }
 
-    </script>
+    </script>        
 }

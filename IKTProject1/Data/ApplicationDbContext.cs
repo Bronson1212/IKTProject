@@ -14,5 +14,6 @@ namespace IKTProject1.Data
         }
 
         public DbSet<MessageModel> Messages { get; set; }
+        public DbSet<CommentModel> Comments { get; set; }
     }
 }
