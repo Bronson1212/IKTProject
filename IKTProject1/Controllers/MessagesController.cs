@@ -1,6 +1,7 @@
 ﻿using IKTProject1.Data;
 using IKTProject1.Models;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
@@ -17,6 +18,7 @@ namespace IKTProject1.Controllers
             _context = context; 
         }
 
+        
         public IActionResult Index()
         {
             //get list of all messages
@@ -32,6 +34,7 @@ namespace IKTProject1.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
+        [Authorize]
         public IActionResult PublishComment(string comment, string messageId)
         {
             //check if user is authenticated
@@ -65,6 +68,7 @@ namespace IKTProject1.Controllers
 
         //on get display createForm
         [HttpGet]
+        [Authorize]
         public IActionResult CreateGet()
         {
             return View("Create");
@@ -72,6 +76,7 @@ namespace IKTProject1.Controllers
 
         //on post create message and save to database
         [HttpPost]
+        [Authorize]
         public IActionResult CreatePost(MessageModel mes)
         {
             //check if i am registred
